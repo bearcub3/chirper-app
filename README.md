@@ -15,6 +15,8 @@ MIT
 
 ---
 
+### Workflow
+
 1. Identify Each View
 
     > write down the requirments of each view including routes and functionalities
