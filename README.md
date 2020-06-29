@@ -38,3 +38,32 @@ MIT
 -   Each "data table" should store the individual items in an object, with the IDs of the items as keys and the items themselves as the values.
 -   Any references to individual items should be done by storing the item's ID.
 -   Arrays of IDs should be used to indicate ordering.
+
+5. Actions
+   With the APIs given to work with, we need to fetch the data on the componentDidMount cycle.
+   The action creator which will fetch each state should be asynchronous action.
+   Redux middleware can gain access to an action when it's on its way to the reducers.
+
+> The middleware will call that function with dispatch method itself as the first argument...The action will only reach the reducers once the API request is completed. It will also “swallow” such actions so don't worry about your reducers receiving weird function arguments. Your reducers will only receive plain object actions—either emitted directly, or emitted by the functions as we just described.” By Dan Abramov
+
+6. Reducers & Middleware
+   (previousState, action) => newState
+
+2 ways to initialize the state inside the store
+[Initializing State](https://redux.js.org/recipes/structuring-reducers/initializing-state)
+
+-   pass the initial state(or a part of the initial state) as `preloadedState` to the `createStore` function.
+
+
+    const store = createStore (
+        rootReducer,
+        { tweets: {} }
+    );
+
+-   include a default state parameter as the first argument inside a particular reducer function.
+
+
+    function tweets (state = {}, action) {
+    }
+
+Middleware is called in the order it is listed.
