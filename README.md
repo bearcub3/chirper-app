@@ -100,3 +100,9 @@ And using `connect()(App)` function upgrades a components to a container which c
         mapStateToProps(StoreState, [ownProps])
 
 The first one is the state of the store and the last one is the props passed to the Tweet component.
+
+---
+
+10. New Tweet Component
+
+        mapStateProps function is called anytime the store is updated/the component receives new props

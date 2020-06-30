@@ -1,22 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { formatTweet, formatDate } from '../utils/helpers';
+import { handleToggleTweet } from '../actions/tweets';
 import {
     TiArrowBackOutline,
     TiHeartOutline,
     TiHeartFullOutline,
 } from 'react-icons/ti';
+import { Link, withRouter } from 'react-router-dom';
 
 class Tweet extends React.Component {
     toParent = (e, id) => {
         e.preventDefault();
+        this.props.history.push(`/tweet/${id}`);
     };
 
     handleLike = (e) => {
         e.preventDefault();
+        const { dispatch, tweet, authedUser } = this.props;
+
+        dispatch(
+            handleToggleTweet({
+                id: tweet.id,
+                hasLiked: tweet.hasLiked,
+                authedUser,
+            })
+        );
     };
     render() {
-        console.log('from Tweet : ', this.props);
         const { tweet } = this.props;
 
         if (tweet === null) {
@@ -32,9 +43,11 @@ class Tweet extends React.Component {
             likes,
             replies,
             parent,
+            id,
         } = tweet;
+
         return (
-            <div className="tweet">
+            <Link to={`/tweet/${id}`} className="tweet">
                 <img
                     src={avatar}
                     alt={`Avatar of ${name}`}
@@ -45,7 +58,7 @@ class Tweet extends React.Component {
                     <div>{formatDate(timestamp)}</div>
                     {parent && (
                         <button
-                            className="replaying-to"
+                            className="replying-to"
                             onClick={(e) => this.toParent(e, parent.id)}
                         >
                             Replaying to @{parent.author}
@@ -57,12 +70,11 @@ class Tweet extends React.Component {
                         <span>{replies !== 0 && replies}</span>
                         <button
                             className="heart-button"
-                            onClick={this.handleLike}
+                            onClick={(e) => this.handleLike(e, name)}
                         >
                             {hasLiked === true ? (
                                 <TiHeartFullOutline
                                     color="#e0245e"
-                                    fill="#e0245e"
                                     className="tweet-icon"
                                 />
                             ) : (
@@ -72,7 +84,7 @@ class Tweet extends React.Component {
                         <span>{likes !== 0 && likes}</span>
                     </div>
                 </div>
-            </div>
+            </Link>
         );
     }
 }
@@ -89,4 +101,4 @@ function mapStateToProps({ authedUser, users, tweets }, { id }) {
     };
 }
 
-export default connect(mapStateToProps)(Tweet);
+export default withRouter(connect(mapStateToProps)(Tweet));
